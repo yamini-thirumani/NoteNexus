@@ -16,7 +16,7 @@ In the age of digital learning, **NoteNexus** offers a smarter and more efficien
 
 Built using **HTML, CSS, and JavaScript**, this application integrates speech recognition with **Natural Language Processing (NLP)** to automatically produce clean, structured, and customizable summaries of any lecture or spoken content.
 
-Whether you're a student, professor, researcher, or professional — **NoteNexus** helps you focus on learning, not just writing.
+Whether you're a student, professor, researcher, or professional, **NoteNexus** helps you focus on learning, not just writing.
 
 ---
 
@@ -37,18 +37,18 @@ Whether you're a student, professor, researcher, or professional — **NoteNexus
 
 ## ✨ Features
 
-- **Speech-to-Text Conversion** — Convert spoken content into editable text instantly  
-- **AI-based Summarization** — Extract key concepts and generate structured summaries  
-- **Adjustable Summary Depth** — Control how brief or detailed the summary is  
-- **Note History** — Retrieve and review past notes (if supported)  
-- **Clean & Responsive UI** — Easy to use, distraction-free interface  
+- **Speech-to-Text Conversion**, Convert spoken content into editable text instantly  
+- **AI-based Summarization**, Extract key concepts and generate structured summaries  
+- **Adjustable Summary Depth**, Control how brief or detailed the summary is  
+- **Note History**, Retrieve and review past notes (if supported)  
+- **Clean & Responsive UI**, Easy to use, distraction-free interface  
 
 
 ---
 
 ## 📸 Screenshots
 
-> *(Add screenshots here — I can guide you if needed)*
+> *(Add screenshots here, I can guide you if needed)*
 
 ---
 
