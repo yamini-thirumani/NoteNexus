@@ -22,7 +22,7 @@ Whether you're a student, professor, researcher, or professional — **NoteNexus
 
 ##  Live Demo
 
-👉 [Live Demo Link]([[https://your-demo-link.com](https://drive.google.com/file/d/12uA0P6DxqEA44aFI3FzNg3bf9AnOX5Yh/view?usp=sharing)]) (NoteNexus)
+👉 [Live Demo Link]([[https://your-demo-link.com](https://drive.google.com/file/d/12uA0P6DxqEA44aFI3FzNg3bf9AnOX5Yh/view?usp=sharing)]) ([NoteNexus](https://drive.google.com/file/d/12uA0P6DxqEA44aFI3FzNg3bf9AnOX5Yh/view?usp=sharing))
 
 ---
 
