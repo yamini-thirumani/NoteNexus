@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - NoteNexus</title>
+    <!-- Preload Poppins font for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animation libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        /* Design System Variables */
+        :root {
+            --primary: #7C3AED;
+            --primary-dark: #6D28D9;
+            --primary-light: #8B5CF6;
+            --accent: #F472B6;
+            --background: #F8FAFC;
+            --card-bg: #ffffff;
+            --text-primary: #1E293B;
+            --text-secondary: #94A3B8;
+            --border-color: #E2E8F0;
+            --success: #10b981;
+            --border-radius: 12px;
+            --animation-speed: 400ms;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --spacing-xs: 8px;
+            --spacing-sm: 12px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            background: var(--background);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Brand Section */
+        .brand-section {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .brand-content {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .brand-logo {
+            font-size: 4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2rem;
+            line-height: 1;
+        }
+
+        .brand-quote {
+            font-size: 1.25rem;
+            line-height: 1.5;
+            color: white;
+            max-width: 400px;
+            margin: 0 auto;
+            white-space: pre-line;
+            font-weight: 300;
+        }
+
+        /* Auth Container */
+        .auth-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            background: var(--card-bg);
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 440px;
+            padding: 2.5rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .auth-card h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
+        }
+
+        .auth-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 52px;
+            padding: 0 1.25rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:hover {
+            border-color: var(--primary-light);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Password Input */
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s ease;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary);
+        }
+
+        /* Submit Button */
+        .btn.primary {
+            width: 100%;
+            height: 52px;
+            margin-top: 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn.primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn.primary:active {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .auth-footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .auth-footer a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .brand-section, .auth-container {
+                padding: 2.5rem;
+            }
+
+            .auth-card {
+                padding: 2rem;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .brand-section {
+                min-height: 280px;
+                padding: 2rem;
+            }
+
+            .brand-logo {
+                font-size: 3rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .brand-quote {
+                font-size: 1.1rem;
+                line-height: 1.4;
+            }
+
+            .auth-container {
+                flex: none;
+                padding: 1.5rem;
+            }
+
+            .auth-card {
+                max-width: 100%;
+                box-shadow: none;
+                padding: 1.5rem 0;
+            }
+
+            .auth-card h1 {
+                font-size: 2.25rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .brand-section {
+                min-height: 240px;
+                padding: 1.5rem;
+            }
+
+            .brand-logo {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .brand-quote {
+                font-size: 1rem;
+            }
+
+            .auth-container {
+                padding: 1.25rem;
+            }
+
+            .auth-card h1 {
+                font-size: 2rem;
+            }
+
+            .form-group input,
+            .btn.primary {
+                height: 48px;
+            }
+        }
+
+        /* Page Transition Animations */
+        @keyframes slideInFromRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Prevent autofill styling */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            transition: background-color 5000s;
+            -webkit-text-fill-color: var(--text-primary) !important;
+        }
+
+        /* Hide browser autofill icons */
+        input::-webkit-contacts-auto-fill-button,
+        input::-webkit-credentials-auto-fill-button {
+            visibility: hidden;
+            display: none !important;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading indicator -->
+    <div class="loading-indicator" id="loadingIndicator"></div>
+
+    <!-- Left side - Branding Section -->
+    <div class="brand-section">
+        <div class="brand-content">
+            <div class="brand-logo">NoteNexus</div>
+            <div class="brand-quote">
+                "Capture your thoughts, organize your ideas and let AI help you make sense of it all."
+            </div>
+        </div>
+    </div>
+
+    <!-- Right side - Signup Form -->
+    <div class="auth-container">
+        <div class="auth-card" id="authCard">
+            <h1>Create Account</h1>
+            <p class="auth-subtitle">Start your journey with NoteNexus</p>
+            
+            <form id="signupForm" action="/signup" method="post" autocomplete="off">
+                <div class="form-group" id="usernameGroup">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required
+                           autocomplete="off"
+                           spellcheck="false">
+                </div>
+
+                <div class="form-group" id="emailGroup">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required
+                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                           title="Please enter a valid email address"
+                           autocomplete="off"
+                           spellcheck="false">
+                </div>
+                
+                <div class="form-group" id="passwordGroup">
+                    <label for="password">Password</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="password" name="password" required
+                               autocomplete="new-password"
+                               spellcheck="false">
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn primary" id="signupButton">Create Account</button>
+            </form>
+            
+            <p class="auth-footer" id="authFooter">
+                Already have an account? <a href="login.html">Log in</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Create animated background elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create floating circles
+            const decoration = document.getElementById('brandDecoration');
+            const circleCount = 10;
+            
+            for (let i = 0; i < circleCount; i++) {
+                const circle = document.createElement('div');
+                circle.classList.add('floating-circle');
+                
+                const size = Math.random() * 150 + 50;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const opacity = Math.random() * 0.1 + 0.05;
+                
+                circle.style.width = `${size}px`;
+                circle.style.height = `${size}px`;
+                circle.style.left = `${posX}%`;
+                circle.style.top = `${posY}%`;
+                circle.style.opacity = opacity;
+                
+                decoration.appendChild(circle);
+            }
+            
+            // Animate the floating circles
+            const circles = document.querySelectorAll('.floating-circle');
+            circles.forEach(circle => {
+                anime({
+                    targets: circle,
+                    translateX: () => anime.random(-20, 20) + 'px',
+                    translateY: () => anime.random(-20, 20) + 'px',
+                    scale: () => anime.random(0.8, 1.2),
+                    easing: 'easeInOutQuad',
+                    duration: () => anime.random(3000, 7000),
+                    complete: function(anim) {
+                        anim.restart();
+                    }
+                });
+            });
+
+            // Entrance animations
+            anime({
+                targets: '#brandContent',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                easing: 'easeOutQuad',
+                duration: 1000,
+                delay: 200
+            });
+            
+            anime({
+                targets: '#authCard',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                easing: 'easeOutQuad',
+                duration: 1000,
+                delay: 400
+            });
+            
+            anime({
+                targets: ['.form-group', '#signupButton', '#authFooter'],
+                opacity: [0, 1],
+                translateY: [10, 0],
+                easing: 'easeOutQuad',
+                duration: 800,
+                delay: anime.stagger(200, {start: 800})
+            });
+
+            // Form submission handling
+            document.getElementById('signupForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const loadingIndicator = document.getElementById('loadingIndicator');
+                loadingIndicator.classList.add('loading');
+                
+                // Get form data
+                const formData = {
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value
+                };
+
+                // Make API call to signup endpoint
+                fetch('http://localhost:5000/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Signup failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loadingIndicator.classList.remove('loading');
+                    if (data.success) {
+                        window.location.href = 'login.html';
+                    } else {
+                        alert(data.message || 'Signup failed');
+                    }
+                })
+                .catch(error => {
+                    loadingIndicator.classList.remove('loading');
+                    console.error('Signup error:', error);
+                    alert('Error signing up. Please try again.');
+                });
+            });
+
+            // Password toggle functionality
+            document.getElementById('togglePassword').addEventListener('click', function() {
+                const passwordInput = document.getElementById('password');
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.textContent = type === 'password' ? '👁️' : '🔒';
+            });
+
+            // Handle login link click with slide animation
+            document.querySelector('.auth-footer a').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.body.style.animation = 'slideInFromLeft 0.6s ease-out';
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 500);
+            });
+
+            // If coming from login page, slide from right
+            if (document.referrer.includes('login.html')) {
+                document.body.style.animation = 'slideInFromRight 0.6s ease-out';
+            }
+        });
+    </script>
+</body>
+</html>

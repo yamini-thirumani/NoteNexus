@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NoteNexus - AI-powered note taking with organization, transcription, and insights in one beautiful workspace">
+    <meta name="theme-color" content="#7C3AED">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="NoteNexus - Smart Note Taking Made Simple">
+    <meta property="og:description" content="Experience the future of note-taking with AI-powered organization, transcription, and insights">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://notenexus.com">
+    
+    <title>NoteNexus - Smart Note Taking Made Simple</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"></noscript>
+    
+    <!-- Feather Icons - Load async -->
+    <script src="https://unpkg.com/feather-icons" defer></script>
+    
+    <!-- AOS Library - Load async with reduced CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" media="print" onload="this.media='all'">
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #8B5CF6;
+            --secondary: #06B6D4;
+            --accent: #F472B6;
+            --dark: #1E293B;
+            --light: #F8FAFC;
+            --gray: #94A3B8;
+            --gray-light: #F1F5F9;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+            --content-width: 1200px;
+        }
+
+        /* Base Reset and Typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 100%;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f1f5f9 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        img, svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Accessibility - Skip to content */
+        .skip-to-content {
+            position: absolute;
+            left: -999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            z-index: 9999;
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 0 0 8px 8px;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .skip-to-content:focus {
+            left: 0;
+            width: auto;
+            height: auto;
+            transform: translateY(0);
+            outline: 2px solid var(--primary);
+        }
+
+        /* Layout */
+        .container {
+            width: 100%;
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 5vw, 2rem);
+        }
+
+        main {
+            flex: 1;
+        }
+
+        /* Updated Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.25rem 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo i {
+            color: var(--primary-light);
+        }
+
+        .logo:hover, .logo:focus {
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-nav {
+            padding: 0.65rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-nav.login {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .btn-nav.login:hover, .btn-nav.login:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .btn-nav.signup {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-nav.signup:hover, .btn-nav.signup:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+            outline: none;
+        }
+
+        .hamburger {
+            display: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            outline: none;
+        }
+
+        .hamburger:hover, .hamburger:focus {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-buttons {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 23, 42, 0.95);
+                padding: 1.5rem;
+                flex-direction: column;
+                gap: 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                transform: translateY(-10px);
+                opacity: 0;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                pointer-events: none;
+            }
+
+            .nav-buttons.active {
+                display: flex;
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .btn-nav {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Enhanced Buttons */
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.125rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+            outline: none;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .btn-secondary:hover, .btn-secondary:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        /* Enhanced Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="%23ffffff10"/></svg>') repeat;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .hero-content {
+            width: 55%;
+            padding-right: 3rem;
+        }
+
+        .hero-image {
+            width: 45%;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title span {
+            display: block;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--gray-light);
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 540px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray-light);
+            opacity: 0.8;
+        }
+
+        /*Floating-Cards*/
+
+ .hero-image {
+    position: relative; /* Ensure this is set to relative */
+    width: 50%; /* Keep your original width */
+    height: 500px; /* Keep your original height */
+    /* Add this to ensure the floating cards container has proper space */
+    min-width: 400px; 
+    margin-left: 0;
+    padding-left: 0;
+    overflow: visible; /* Critical to ensure cards can flow outside container */
+}
+
+/* Floating cards container adjustments */
+.floating-cards {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    /* Ensure the container is full width and height of the hero-image */
+    min-width: 600px; /* Make this wider than hero-image */
+    min-height: 500px;
+    pointer-events: none;
+}
+
+/* Individual floating card adjustments */
+.floating-card {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    opacity: 1;
+    will-change: transform;
+    /* Make sure the card's visibility is controlled by position, not overflow */
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* Note Card positioning fix */
+.note-card {
+    top: 10%;
+    right: 30%; 
+    width: 240px;
+    height: auto;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #94A3B8;
+    z-index: 13;
+    animation: floatCard1 8s infinite ease-in-out;
+    transform: translateZ(0) rotate(-5deg);
+}
+
+/* AI Card positioning fix */
+.ai-card {
+    top: 35%;
+    right: 55%; 
+    width: 200px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(124, 58, 237, 0.08);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    z-index: 12;
+    animation: floatCard2 6s infinite ease-in-out;
+    transform: translateZ(0) rotate(3deg);
+    color: #F472B6;
+}
+
+/* Insight Card positioning fix */
+.insight-card {
+    top: 60%;
+    right: 40%; 
+    width: 220px;
+    height: auto;
+    color: #7C3AED;
+    background: rgba(6, 182, 212, 0.08);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    z-index: 11;
+    animation: floatCard3 7s infinite ease-in-out;
+    transform: translateZ(0) rotate(-2deg);
+}
+
+/* Summary Card positioning fix */
+.summary-card {
+    top: 23%;
+    right: 30%; 
+    width: 200px;
+    height: auto;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    z-index: 10;
+    animation: floatCard4 9s infinite ease-in-out;
+    transform: translateZ(0) rotate(1deg);
+    color: #06B6D4;
+}
+
+/* Make sure animation keyframes are not constrained */
+@keyframes floatCard1 {
+    0% {
+        transform: translateY(0) translateX(0) rotate(-5deg);
+    }
+    50% {
+        transform: translateY(-15px) translateX(5px) rotate(-5deg);
+    }
+    100% {
+        transform: translateY(0) translateX(0) rotate(-5deg);
+    }
+}
+
+@keyframes floatCard2 {
+    0% {
+        transform: translateY(0) translateX(0) rotate(3deg);
+    }
+    50% {
+        transform: translateY(-20px) translateX(-5px) rotate(3deg);
+    }
+    100% {
+        transform: translateY(0) translateX(0) rotate(3deg);
+    }
+}
+
+@keyframes floatCard3 {
+    0% {
+        transform: translateY(0) translateX(0) rotate(-2deg);
+    }
+    50% {
+        transform: translateY(-12px) translateX(7px) rotate(-2deg);
+    }
+    100% {
+        transform: translateY(0) translateX(0) rotate(-2deg);
+    }
+}
+
+@keyframes floatCard4 {
+    0% {
+        transform: translateY(0) translateX(0) rotate(1deg);
+    }
+    50% {
+        transform: translateY(-10px) translateX(-8px) rotate(1deg);
+    }
+    100% {
+        transform: translateY(0) translateX(0) rotate(1deg);
+    }
+}
+
+/* Make sure responsive styles don't hide the cards */
+@media (max-width: 992px) {
+    .hero-image {
+        min-width: 100%; /* Full width on smaller screens */
+    }
+    
+    .floating-cards {
+        min-width: 100%; /* Full width on smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .floating-card {
+        transform: scale(0.85);
+    }
+    
+    /* Mobile-specific position adjustments */
+    .note-card {
+        top: 5%;
+        right: 5%;
+    }
+    
+    .ai-card {
+        top: 35%;
+        right: 20%;
+    }
+    
+    .insight-card {
+        top: 60%;
+        right: 0;
+    }
+    
+    .summary-card {
+        top: 20%;
+        right: -8%;
+    }
+}
+@media (max-width: 768px) {
+    .hero {
+        padding: 5rem 0;
+    }
+    
+    .hero-image {
+        height: 350px;
+    }
+    
+    .floating-card {
+        transform: scale(0.85);
+    }
+    
+    .note-card {
+        top: 5%;
+        right: 5%;
+    }
+    
+    .ai-card {
+        top: 35%;
+        right: 20%;
+    }
+    
+    .insight-card {
+        top: 60%;
+        right: 0;
+    }
+    
+    .summary-card {
+        top: 20%;
+        right: -8%;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-image {
+        height: 300px;
+    }
+    
+    .floating-card {
+        transform: scale(0.75);
+    }
+}
+        /* Features Section */
+        .features {
+            padding: 8rem 0;
+            background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            max-width: var(--content-width);
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            padding: 0 clamp(1rem, 5vw, 2rem);
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: var(--transition);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .feature-card:hover, .feature-card:focus-within {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Testimonials Section */
+        /* .testimonials {
+            padding: 8rem 0;
+            background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 2px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: var(--transition);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .testimonial-quote {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .testimonial-quote i {
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: var(--primary);
+            opacity: 0.3;
+            font-size: 1.5rem;
+        }
+
+        .testimonial-quote p {
+            color: white;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-left: 2.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            color: white;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .author-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin: 0;
+        } */
+        .testimonials {
+            padding: 8rem 0;
+            background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 2px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-items: center; /* Center the card */
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: var(--transition);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .testimonial-quote {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .testimonial-quote i {
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: var(--primary);
+            opacity: 0.3;
+            font-size: 1.5rem;
+        }
+
+        .testimonial-quote p {
+            color: white;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-left: 2.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .author-avatar {
+            width: 80px; /* Increased image size */
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            color: white;
+            font-size: 1.3rem; /* Slightly larger */
+            margin: 0;
+        }
+
+        .author-info p {
+            color: var(--gray);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-content p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--gray-light);
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* Enhanced Footer Styles */
+        .footer {
+            background: linear-gradient(180deg, #0F172A 0%, #0c1425 100%);
+            color: white;
+            padding: 5rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            top: 0;
+            left: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                transparent 100%);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1.5fr 2fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .footer-logo:hover, .footer-logo:focus {
+            color: var(--primary-light);
+            outline: none;
+        }
+
+        .footer-tagline {
+            color: var(--gray);
+            font-size: 1rem;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-column h4 {
+            color: white;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .footer-column ul li a:hover, .footer-column ul li a:focus {
+            color: white;
+            outline: none;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .copyright {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        /* Pulse animation for CTA button - optimized */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(124, 58, 237, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+            will-change: box-shadow;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(var(--rotation)); }
+            25% { transform: translate(-10px, -15px) rotate(calc(var(--rotation) - 2deg)); }
+            50% { transform: translate(5px, 10px) rotate(calc(var(--rotation) + 1deg)); }
+            75% { transform: translate(-5px, -5px) rotate(calc(var(--rotation) - 1deg)); }
+        }
+
+        /* Media Queries - Refined */
+        @media (max-width: 1024px) {
+            .hero .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-content {
+                width: 100%;
+                padding-right: 0;
+            }
+
+            .hero-image {
+                width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .floating-cards {
+                position: relative;
+                height: 400px;
+                right: 0;
+                margin-top: 2rem;
+                opacity: 0.8;
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 90%;
+            }
+            
+            .features {
+                padding: 4rem 0;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .feature-card {
+                padding: 2rem;
+            }
+            
+            .testimonials {
+                padding: 4rem 0;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                margin-bottom: 3rem;
+            }
+            
+            .cta {
+                padding: 4rem 0;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .footer-links {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+
+        /* Reduced Motion Preference */
+        @media (prefers-reduced-motion: reduce) {
+            .animated,
+            .floating-card,
+            .pulse,
+            html {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Add a small utility class for screen readers */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Accessibility - Skip to content link -->
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="./" class="logo">
+            <i data-feather="edit-3" aria-hidden="true"></i>
+            NoteNexus
+        </a>
+        <div class="nav-buttons">
+            <a href="./login.html" class="btn-nav login" onclick="handleLogin(event)">
+                <i data-feather="log-in" aria-hidden="true"></i>
+                Login
+            </a>
+            <a href="./signup.html" class="btn-nav signup">
+                <i data-feather="user-plus" aria-hidden="true"></i>
+                Sign Up
+            </a>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <!-- Enhanced Hero Section -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title" id="hero-title" data-aos="fade-up" data-aos-duration="1000">
+                        Your Notes, Elevated by
+                        <span>AI Intelligence</span>
+                    </h1>
+                    <p class="hero-subtitle" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                        Experience the future of note-taking with AI-powered organization, transcription, and insights - all in one beautiful workspace.
+                    </p>
+                    <div class="hero-buttons" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                        <a href="./signup.html" class="btn btn-primary pulse">
+                            Start Taking Better Notes
+                            <i data-feather="arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+               <div class="hero-image" aria-hidden="true">
+            <div class="floating-cards">
+                <!-- Note Card -->
+                <div class="floating-card note-card">
+                    <div class="card-header">
+                        <i data-feather="file-text"></i>
+                        <span>Group Meeting Notes</span>
+                    </div>
+                    <div class="note-preview">
+                        <div class="note-line"></div>
+                        <div class="note-line"></div>
+                        <div class="note-line short"></div>
+                    </div>
+                    <div class="note-footer">
+                        <span class="date">May 13, 2023</span>
+                    </div>
+                </div>
+                
+                <!-- AI Processing Card -->
+                <div class="floating-card ai-card">
+                    <div class="ai-icon">
+                        <i data-feather="zap"></i>
+                    </div>
+                    <div class="ai-text">
+                        <div class="ai-label">AI Assistant</div>
+                        <div class="ai-status">Lecture recording analysis</div>
+                    </div>
+                </div>
+                
+                <!-- Insight Card -->
+                <div class="floating-card insight-card">
+                    <div class="insight-header">
+                        <i data-feather="star"></i>
+                        <span>Key Insight</span>
+                    </div>
+                    <div class="insight-content">
+                        <p class="insight-text">Extracting citation information...</p>
+                    </div>
+                </div>
+                
+                <!-- Summary Card -->
+                <div class="floating-card summary-card">
+                    <div class="summary-header">
+                        <i data-feather="align-left"></i>
+                        <span>Smart Summary</span>
+                    </div>
+                    <div class="summary-content">
+                        <div class="summary-line"></div>
+                        <div class="summary-line"></div>
+                        <div class="summary-line short"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Subtle animated background elements -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+            </div>
+        </section>
+
+        <!-- Features Section with heading -->
+        <section class="features" aria-labelledby="features-title">
+            <div class="container">
+                <h2 id="features-title" class="sr-only">Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card" data-aos="fade-up" data-aos-duration="800">
+                        <div class="feature-icon" aria-hidden="true">
+                            <i data-feather="mic"></i>
+                        </div>
+                        <h3>Record</h3>
+                        <p>Capture your thoughts with crystal-clear voice recording. Our advanced audio processing ensures every word is preserved with perfect clarity.</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                        <div class="feature-icon" aria-hidden="true">
+                            <i data-feather="type"></i>
+                        </div>
+                        <h3>Transcribe</h3>
+                        <p>Transform your voice into text instantly with our AI-powered transcription. Supports multiple languages and accents with high accuracy.</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                        <div class="feature-icon" aria-hidden="true">
+                            <i data-feather="file-text"></i>
+                        </div>
+                        <h3>Summarize</h3>
+                        <p>Get intelligent summaries of your notes instantly. Our AI analyzes your content and extracts key insights, saving you valuable time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <!-- <section class="testimonials" aria-labelledby="testimonials-title">
+            <div class="container">
+                <h2 id="testimonials-title" class="section-title" data-aos="fade-up">What Our Creators Say</h2>
+                
+                <div class="testimonials-grid" data-aos="fade-up" data-aos-delay="200">
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote">
+                            <i data-feather="message-circle" aria-hidden="true"></i>
+                            <p>"As team lead for NoteNexus, I coordinated our development process and focused on the core AI functionality. My vision was to create a note-taking tool that actually understands what students need during fast-paced lectures."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="/backend/public/images/image1.png" alt="" aria-hidden="true">
+                            </div>
+                            <div class="author-info">
+                                <h4>Yamini Thirumani</h4>
+                                <p>Team Lead & AI Implementation</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote">
+                            <i data-feather="message-circle" aria-hidden="true"></i>
+                            <p>"My contribution focused on creating a robust backend infrastructure that processes and organizes notes efficiently. I implemented the real-time transcription engine that converts spoken lectures into searchable text."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="/api/placeholder/48/48" alt="" aria-hidden="true">
+                            </div>
+                            <div class="author-info">
+                                <h4>Suram Deepthi</h4>
+                                <p>Backend Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="testimonial-card">
+                        <div class="testimonial-quote">
+                            <i data-feather="message-circle" aria-hidden="true"></i>
+                            <p>I designed NoteNexus with accessibility and user experience as top priorities. The floating card animations and responsive interface ensure students can focus on learning instead of struggling with complicated tools.</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="/api/placeholder/48/48" alt="" aria-hidden="true">
+                            </div>
+                            <div class="author-info">
+                                <h4>Sneha Priya</h4>
+                                <p>UI/UX Designer</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="testimonial-card">
+                        <div class="testimonial-quote">
+                            <i data-feather="message-circle" aria-hidden="true"></i>
+                            <p>I conducted extensive research with fellow students to understand pain points in note-taking. This insight helped shape features like smart summaries and concept extraction that make NoteNexus uniquely valuable for academic work.</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="/api/placeholder/48/48" alt="" aria-hidden="true">
+                            </div>
+                            <div class="author-info">
+                                <h4>Radha Praneetha</h4>
+                                <p>Research Lead & Quality Assurance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+        <section class="testimonials" aria-labelledby="testimonials-title">
+    <div class="container">
+        <h2 id="testimonials-title" class="section-title" data-aos="fade-up">What I Built - <strong><i>NoteNexus</i></strong></h2>
+        
+        <div class="testimonials-grid" data-aos="fade-up" data-aos-delay="200">
+            <div class="testimonial-card">
+                <div class="testimonial-quote">
+                    <i data-feather="message-circle" aria-hidden="true"></i>
+                    <p>"While building NoteNexus, I took the initiative to lead the design and development of its core features, including AI-powered note summarization, real-time transcription, and a user-friendly interface. My goal was to create a tool that truly supports students during fast-paced lectures by combining intelligent automation with accessible design."</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <img src="/images/yaminithirumani.jpg" alt="Yamini Thirumani">
+                    </div>
+                    <div class="author-info">
+                        <h4>Yamini Thirumani</h4>
+                        <p>Full Stack Developer & AI Innovator</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- CTA Section -->
+        <section class="cta" aria-labelledby="cta-title">
+            <div class="container">
+                <div class="cta-content" data-aos="fade-up">
+                    <h2 id="cta-title">Ready to Transform Your Note-Taking?</h2>
+                    <p>Join thousands of professionals who've upgraded their productivity with NoteNexus.</p>
+                    <div class="cta-buttons">
+                        <a href="./signup.html" class="btn btn-primary">Get Started for Free</a>
+                        <a href="./demo.html" class="btn btn-secondary">Request a Demo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="./" class="footer-logo">
+                        <i data-feather="book" aria-hidden="true"></i>
+                        NoteNexus
+                    </a>
+                    <p class="footer-tagline">Your notes, elevated by AI intelligence</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="./features.html">Features</a></li>
+                            <li><a href="./pricing.html">Pricing</a></li>
+                            <li><a href="./integrations.html">Integrations</a></li>
+                            <li><a href="./roadmap.html">Roadmap</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="./blog.html">Blog</a></li>
+                            <li><a href="./tutorials.html">Tutorials</a></li>
+                            <li><a href="./support.html">Support</a></li>
+                            <li><a href="./status.html">Status</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./careers.html">Careers</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                            <li><a href="./legal.html">Legal</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright"> 2025 NoteNexus. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="https://twitter.com/notenexus" class="social-icon" aria-label="Twitter">
+                        <i data-feather="twitter" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://linkedin.com/company/notenexus" class="social-icon" aria-label="LinkedIn">
+                        <i data-feather="linkedin" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://github.com/notenexus" class="social-icon" aria-label="GitHub">
+                        <i data-feather="github" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Feather icons
+            feather.replace();
+            
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                offset: 100,
+                once: true
+            });
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Check if user is already logged in
+            checkAuthStatus();
+        });
+
+        // Handle login functionality
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            // Check if user is already logged in
+            const token = localStorage.getItem('notenexus_token');
+            const user = JSON.parse(localStorage.getItem('notenexus_user') || '{}');
+            
+            if (token && user.name) {
+                // If already logged in, redirect to dashboard
+                window.location.href = './dashboard.html';
+                return;
+            }
+
+            // If not logged in, redirect to login page
+            window.location.href = './login.html';
+        }
+
+        // Check authentication status
+        function checkAuthStatus() {
+            const token = localStorage.getItem('notenexus_token');
+            const user = JSON.parse(localStorage.getItem('notenexus_user') || '{}');
+            const loginButton = document.querySelector('.btn-nav.login');
+            
+            if (token && user.name) {
+                // Update login button to show dashboard
+                loginButton.innerHTML = '<i data-feather="home" aria-hidden="true"></i> Dashboard';
+                loginButton.href = './dashboard.html';
+                loginButton.onclick = null; // Remove the login handler
+                feather.replace(); // Update icons
+            }
+        }
+    </script>
+</body>
+</html>

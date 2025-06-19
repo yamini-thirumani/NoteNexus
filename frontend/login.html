@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NoteNexus</title>
+    <!-- Preload Poppins font for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animation libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        /* Design System Variables */
+        :root {
+            --primary: #7C3AED;
+            --primary-dark: #6D28D9;
+            --primary-light: #8B5CF6;
+            --accent: #F472B6;
+            --background: #F8FAFC;
+            --card-bg: #ffffff;
+            --text-primary: #1E293B;
+            --text-secondary: #94A3B8;
+            --border-color: #E2E8F0;
+            --success: #10b981;
+            --border-radius: 12px;
+            --animation-speed: 400ms;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --spacing-xs: 8px;
+            --spacing-sm: 12px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            background: var(--background);
+            color: var(--text-primary);
+            overflow-y: auto; /* Allow vertical scrolling */
+            animation: slideInFromLeft 0.6s ease-out;
+        }
+
+        /* Brand Section */
+        .brand-section {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-content {
+            max-width: 440px;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-logo {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .brand-quote {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        /* Animated background elements */
+        .brand-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Auth Container */
+        .auth-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            background: var(--card-bg);
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 440px;
+            padding: 2.5rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .auth-card h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
+        }
+
+        .auth-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 52px;
+            padding: 0 1.25rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:hover {
+            border-color: var(--primary-light);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Input animations */
+        .input-focused {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 5px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        /* Password Input Wrapper */
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s ease;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary);
+        }
+
+        /* Button Styles */
+        .btn.primary {
+            width: 100%;
+            height: 52px;
+            margin-top: 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn.primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn.primary:active {
+            transform: translateY(0);
+        }
+
+        /* Button ripple effect */
+        .btn.primary::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            opacity: 1;
+            transition: transform 0.5s, opacity 0.5s;
+        }
+
+        .btn.primary.clicked::after {
+            transform: scale(5);
+            opacity: 0;
+        }
+
+        /* Footer */
+        .auth-footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .auth-footer a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Animation Container */
+        .auth-lottie {
+            width: 100%;
+            height: 150px;
+            margin: var(--spacing-lg) 0;
+            opacity: 0; /* Initial state for animation */
+        }
+
+        /* Loading indicator */
+        .loading-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary-light);
+            transform: scaleX(0);
+            transform-origin: 0 0;
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .loading {
+            opacity: 1;
+            animation: loading 2s infinite ease-in-out;
+        }
+
+        @keyframes loading {
+            0% { transform: scaleX(0); }
+            50% { transform: scaleX(1); }
+            100% { transform: scaleX(0); transform-origin: 100% 0; }
+        }
+
+        /* Page Transition Animations */
+        @keyframes slideInFromRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .brand-section, .auth-container {
+                padding: 2.5rem;
+            }
+
+            .auth-card {
+                padding: 2rem;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .brand-section {
+                flex: none;
+                min-height: 280px;
+                padding: 2rem;
+            }
+
+            .brand-content {
+                padding: 0;
+            }
+
+            .brand-logo {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            .auth-container {
+                flex: none;
+                padding: 1.5rem;
+            }
+
+            .auth-card {
+                max-width: 100%;
+                box-shadow: none;
+                padding: 1.5rem 0;
+            }
+
+            .auth-card h1 {
+                font-size: 2.25rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .brand-section {
+                min-height: 240px;
+                padding: 1.5rem;
+            }
+
+            .brand-logo {
+                font-size: 2.5rem;
+            }
+
+            .brand-quote {
+                font-size: 1.1rem;
+            }
+
+            .auth-container {
+                padding: 1.25rem;
+            }
+
+            .auth-card h1 {
+                font-size: 2rem;
+            }
+
+            .form-group input,
+            .btn.primary {
+                height: 48px;
+            }
+        }
+
+        /* Prevent autofill styling */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            transition: background-color 5000s;
+            -webkit-text-fill-color: var(--text-primary) !important;
+        }
+
+        /* Hide browser autofill icons */
+        input::-webkit-contacts-auto-fill-button,
+        input::-webkit-credentials-auto-fill-button {
+            visibility: hidden;
+            display: none !important;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading indicator -->
+    <div class="loading-indicator" id="loadingIndicator"></div>
+
+    <!-- Left side - Branding Section -->
+    <div class="brand-section">
+        <div class="brand-decoration" id="brandDecoration"></div>
+        <div class="brand-content" id="brandContent">
+            <div class="brand-logo">NoteNexus</div>
+            <div class="brand-quote">
+                "Transform your note-taking experience with the power of AI and seamless organization."
+            </div>
+        </div>
+    </div>
+
+    <!-- Right side - Login Form -->
+    <div class="auth-container">
+        <div class="auth-card" id="authCard">
+            <h1>Welcome Back</h1>
+            <p class="auth-subtitle">Log in to access your notes</p>
+            
+            <div id="loginLottie" class="auth-lottie"></div>
+            
+            <form id="loginForm" action="./login" method="post" autocomplete="off">
+                <div class="form-group" id="emailGroup">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required 
+                           autocomplete="off"
+                           spellcheck="false">
+                </div>
+                
+                <div class="form-group" id="passwordGroup">
+                    <label for="password">Password</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="password" name="password" required 
+                               autocomplete="new-password"
+                               spellcheck="false">
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn primary" id="loginButton">Log In</button>
+            </form>
+            
+            <p class="auth-footer" id="authFooter">
+                Don't have an account? <a href="./signup.html">Sign up</a>
+            </p>
+            <div id="error-message" style="display: none; color: red;"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if already logged in
+            const token = localStorage.getItem('notenexus_token');
+            const user = localStorage.getItem('notenexus_user');
+            if (token && user) {
+                window.location.replace('./dashboard.html');
+                return;
+            }
+
+            // Form submission handling
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                const loginButton = document.getElementById('loginButton');
+                const originalText = loginButton.textContent;
+                loginButton.disabled = true;
+                loginButton.textContent = 'Logging in...';
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                try {
+                    console.log('Sending login request...');
+                    const response = await fetch('http://localhost:5000/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    console.log('Response status:', response.status);
+                    const data = await response.json();
+                    console.log('Response data:', { ...data, token: data.token ? '[PRESENT]' : '[MISSING]' });
+                    
+                    if (response.ok && data.token && data.user) {
+                        // Store user data and token using consistent keys
+                        localStorage.setItem('notenexus_token', data.token);
+                        const userData = {
+                            name: data.user.name,
+                            email: data.user.email,
+                            id: data.user.id
+                        };
+                        console.log('Storing user data:', userData);
+                        localStorage.setItem('notenexus_user', JSON.stringify(userData));
+                        
+                        // Redirect to dashboard
+                        console.log('Redirecting to dashboard...');
+                        window.location.replace('./dashboard.html');
+                    } else {
+                        console.error('Login failed:', data.message);
+                        showError(data.message || 'Login failed. Please check your credentials.');
+                        loginButton.disabled = false;
+                        loginButton.textContent = originalText;
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    showError('An error occurred during login. Please try again.');
+                    loginButton.disabled = false;
+                    loginButton.textContent = originalText;
+                }
+            });
+
+            // Password toggle
+            document.getElementById('togglePassword').addEventListener('click', function() {
+                const passwordInput = document.getElementById('password');
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.textContent = type === 'password' ? '👁️' : '🔒';
+            });
+        });
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
