@@ -48,7 +48,21 @@ Whether you're a student, professor, researcher, or professional, **NoteNexus** 
 
 ## 📸 Screenshots
 
-> *(Add screenshots here, I can guide you if needed)*
+### 🏠 Home Page
+![Home](https://raw.githubusercontent.com/yamini-thirumani/NoteNexus/main/backend/public/images/home.png)
+
+### 🔐 Login Page
+![Login](https://raw.githubusercontent.com/yamini-thirumani/NoteNexus/main/backend/public/images/login.png)
+
+### 🖥️ Dashboard
+![Dashboard](https://raw.githubusercontent.com/yamini-thirumani/NoteNexus/main/backend/public/images/dashboard.png)
+
+### 🧠 Summary Output
+![Summary](https://raw.githubusercontent.com/yamini-thirumani/NoteNexus/main/backend/public/images/summary.png)
+
+### 👩‍💻 Developer Section
+![Developer](https://raw.githubusercontent.com/yamini-thirumani/NoteNexus/main/backend/public/images/developer.png)
+
 
 ---
 
